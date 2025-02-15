@@ -1,0 +1,71 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment Variables
+.env
+.env.local
+.env.test
+.env.production
+
+# Coverage directories
+coverage/
+.nyc_output/
+
+# Build directories
+dist/
+build/
+
+# Static files
+public/
+uploads/
+
+# Temp files
+tmp/
+temp/
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Debug
+*.swp
+*.swo
+
+# Docker
+.dockerignore
+
+# Local environment
+.local/
+
+# Docker
+.dockerignore
+
+.env
+
+*/global-bundle.pem

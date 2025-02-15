@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    container_name: node-app
+    ports:
+      - "3010:3010"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - cert-volume:/usr/src/app/certs
+    command: npm start
+
+volumes:
+  cert-volume:

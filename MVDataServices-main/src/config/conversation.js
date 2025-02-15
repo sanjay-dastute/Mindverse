@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
-const logger = require('../utils/logger');
+const logger = require('winston');
 const ConversationSchema = require('../models/conversationModel');
 const NotificationSchema = require('../models/notificationModel');
 dotenv.config();

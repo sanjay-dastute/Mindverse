@@ -60,7 +60,7 @@ const addProduct = async (req, res) => {
 
       if (!matches) {
         console.log('Invalid image format');
-        return res.status(400).json({ message: "Invalid image format" });
+        return res.status(400).json({ message: "Failed to upload product image: Invalid format" });
       }
 
       const mimeType = matches[1];
@@ -91,14 +91,17 @@ const addProduct = async (req, res) => {
 
     saveEvent("PRODUCT_ADDED", response.data.product);
 
-    res.status(201).json(response.data);
+    res.status(201).json({
+      message: "Product image uploaded successfully",
+      ...response.data
+    });
   } catch (error) {
     if (error.response && error.response.status === 404) {
       console.error(`Organization not found for organizationId: ${organizationId}`);
       return res.status(404).json({ message: "Organization not found" });
     }
     console.error(`Error adding product: ${error.message}`);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Failed to add product with image" });
   }
 };
 
@@ -130,7 +133,7 @@ const updateProduct = async (req, res) => {
 
           if (!matches) {
               console.log('Invalid image format');
-              return res.status(400).json({ message: "Invalid image format" });
+              return res.status(400).json({ message: "Failed to upload product image: Invalid format" });
           }
 
           const mimeType = matches[1];
@@ -160,10 +163,13 @@ const updateProduct = async (req, res) => {
       });
 
       console.log(`Product ${productId} updated successfully for organizationId: ${organizationId}`);
-      res.status(200).json(response.data);
+      res.status(200).json({
+        message: "Product image uploaded successfully",
+        ...response.data
+      });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error('Error in product operation:', error);
+      res.status(500).json({ message: "Failed to process product operation" });
   }
 };
 
@@ -188,10 +194,13 @@ const deleteProduct = async (req, res) => {
       });
 
       console.log(`Product ${productId} deleted successfully for organizationId: ${organizationId}`);
-      res.status(200).json(response.data);
+      res.status(200).json({
+        message: "Product deleted successfully",
+        ...response.data
+      });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error('Error in product operation:', error);
+      res.status(500).json({ message: "Failed to process product operation" });
   }
 };
 
@@ -209,10 +218,13 @@ const getAllProducts = async (req, res) => {
       const response = await axios.get(`${DATA_SERVICE_URL}/mv-product/all-products/${organizationId}`);
 
       console.log(`Successfully fetched products for organizationId: ${organizationId}`);
-      res.status(200).json(response.data);
+      res.status(200).json({
+        message: "Products fetched successfully",
+        ...response.data
+      });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error('Error in product operation:', error);
+      res.status(500).json({ message: "Failed to process product operation" });
   }
 };
 
@@ -232,10 +244,13 @@ const getProductName = async (req, res) => {
       });
 
       console.log(`Successfully fetched product name for productId: ${productId}`);
-      res.status(200).json(response?.data);
+      res.status(200).json({
+        message: "Product name fetched successfully",
+        ...response?.data
+      });
   } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Internal server error" });
+      console.error('Error in product operation:', error);
+      res.status(500).json({ message: "Failed to process product operation" });
   }
 };
 
@@ -259,9 +274,9 @@ const getMediaCount = async (req, res) => {
   } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 404) {
-          return res.status(404).json({ message: "User not found" });
+          return res.status(404).json({ message: "Failed to get media count: User not found" });
       }
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Failed to get media count" });
   }
 };
 const tagProductToPost = async (req, res) => {
@@ -289,13 +304,17 @@ const tagProductToPost = async (req, res) => {
       });
 
       console.log(`Successfully tagged products to posts for organizationId: ${organizationId}`);
-      res.status(200).json(response.data);
+      res.status(200).json({
+        message: "Product tagged to media successfully",
+        ...response.data
+      });
   } catch (error) {
       console.error(error);
       if (error.response) {
           res.status(error.response.status).json(error.response.data);
       } else {
-          res.status(500).json({ message: "Internal server error" });
+          console.error('Error tagging product:', error);
+          res.status(500).json({ message: "Failed to tag product to post" });
       }
   }
 };

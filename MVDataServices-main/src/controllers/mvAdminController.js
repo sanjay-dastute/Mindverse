@@ -88,7 +88,7 @@ const updateUniversalContext = async (req, res) => {
         // Check if the id is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(id)) {
             logger.error(`Invalid context ID provided: ${id}`);
-            return res.status(400).json({ message: "Invalid context ID" });
+            return res.status(400).json({ message: "Failed to update context settings: Invalid context ID" });
         }
 
         const { isActive, prompt } = req.body;
@@ -99,7 +99,7 @@ const updateUniversalContext = async (req, res) => {
 
         if (!existingContext) {
             logger.error(`Context not found for ID: ${id}`);
-            return res.status(404).json({ message: "Context not found" });
+            return res.status(404).json({ message: "Failed to update context settings: Context not found" });
         }
 
         existingContext.isActive = isActive;
@@ -125,10 +125,13 @@ const updateUniversalContext = async (req, res) => {
         }
 
         logger.info(`Successfully updated universal context with ID: ${id}`);
-        res.status(200).json({ message: "Context updated successfully" });
+        res.status(200).json({ 
+            message: "Context settings saved successfully",
+            data: { id, isActive, prompt }
+        });
     } catch (error) {
         logger.error({ error }, 'Error updating universal context');
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Failed to update context settings" });
     }
 };
 

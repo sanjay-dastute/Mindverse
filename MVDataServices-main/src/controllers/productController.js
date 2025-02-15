@@ -266,8 +266,7 @@ const tagProductToPost = async (req, res) => {
         ) {
             logger.info('Invalid request: missing organizationId or tagRequests');
             return res.status(400).json({
-                message:
-                    "Bad request: organizationId and tagRequests (non-empty array) are required",
+                message: "Failed to tag product: Missing required information",
             });
         }
 
@@ -275,7 +274,7 @@ const tagProductToPost = async (req, res) => {
 
         if (!user) {
             logger.info(`User not found for organizationId: ${organizationId}`);
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "Failed to tag product: User not found" });
         }
 
         const taggedPosts = [];
@@ -285,7 +284,7 @@ const tagProductToPost = async (req, res) => {
                 taggedPosts.push({
                     postId,
                     productId,
-                    error: "postId and productId are required for each request",
+                    error: "Failed to tag product: Missing postId or productId",
                 });
                 continue;
             }
@@ -293,7 +292,7 @@ const tagProductToPost = async (req, res) => {
             const postIndex = user.posts.findIndex((post) => post.id === postId);
 
             if (postIndex === -1) {
-                taggedPosts.push({ postId, productId, error: "Post not found" });
+                taggedPosts.push({ postId, productId, error: "Failed to tag product: Post not found" });
                 continue;
             }
 
@@ -301,7 +300,7 @@ const tagProductToPost = async (req, res) => {
             const product = await Product.findOne({ productId, organizationId });
 
             if (!product) {
-                taggedPosts.push({ postId, productId, error: "Product not found" });
+                taggedPosts.push({ postId, productId, error: "Failed to tag product: Product not found" });
                 continue;
             }
 
@@ -316,10 +315,14 @@ const tagProductToPost = async (req, res) => {
         await user.save();
 
         logger.info(`Successfully tagged products to posts for organizationId: ${organizationId}`);
-        res.status(200).json({ organizationId, taggedPosts });
+        res.status(200).json({
+            message: 'Product tagged to media successfully',
+            organizationId,
+            taggedPosts
+        });
     } catch (error) {
         logger.error({ err: error }, `Error tagging products to posts for organizationId: ${req.body.organizationId}`);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Failed to tag product to media" });
     }
 };
 

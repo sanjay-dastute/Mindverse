@@ -1,0 +1,28 @@
+.ant-collapse-content-box {
+    padding: 0 !important;
+}
+
+.listView-mainTitle {
+    margin: 12px 0px;
+}
+
+.listView-mainSearch {
+    margin: 12px 0px;
+    font-size: 16px;
+}
+
+.listView-moreBtn {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.listView-itemTitle {
+    margin: 3px 0px !important;
+}
+
+.listView-avatarDiv {
+    padding: 2px;
+    background: linear-gradient(45deg, #f4b301, #f4b301, #ffd700, #ffcc00);
+    border-radius: 50%;
+}

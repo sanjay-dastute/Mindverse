@@ -1,0 +1,116 @@
+body.dark-mode .user {
+    /* padding: 12px 40px; */
+    background: #1e1e1e;
+    /* border: transparent; */
+}
+
+/* @media (max-width:576px) {
+    .user {
+        padding: 3px 15px;
+    }
+} */
+
+/* .user-profile {
+    position: relative;
+    z-index: 1;
+    border-radius: 50%;
+    width: auto;
+    height: auto;
+} */
+
+body.dark-mode h2 {
+    color: white;
+}
+
+/* .user-profile-col {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+} */
+
+/* .user-profile .profile-image {
+    outline: 7px solid #fff;
+    width: 66%;
+    height: auto;
+} */
+
+/* .user-profile::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    content: " ";
+    margin: -1px;
+    bottom: 0;
+    border-radius: inherit;
+    z-index: -1;
+} */
+
+body.dark-mode .profile-detail .ant-statistic-title,
+body.dark-mode .profile-detail .ant-statistic-content {
+    /* font-size: clamp(12px, 2.5vw, 16px); */
+    color: #a0a0a0;
+
+}
+
+body.dark-mode .profile-detail .ant-statistic-title {
+    /* font-weight: 600; */
+    color: #e0e0e0;
+}
+
+/* .profile-name {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5em;
+    margin: 16px 0;
+} */
+
+/* .profile-desc {
+    font-size: clamp(12px, 2vw, 14px);
+} */
+
+body.dark-mode .profile-title {
+    color: #ffffff;
+    /* margin: 0;
+    font-weight: 600;
+    text-transform: capitalize; */
+}
+
+body.dark-mode .profile-about,
+body.dark-mode .profile-follower {
+    color: #e0e0e0;
+    /* margin: 0;
+    font-weight: 400; */
+}
+
+/* .userInfoMainRow {
+    column-gap: 8%;
+
+} */
+
+
+/* Center the Card on the Page */
+/* .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height 
+  } */
+
+/* Additional styles to ensure content alignment */
+/* .userInfoMainRow {
+    justify-content: center; /* Aligns the entire row content to center horizontally 
+  } */
+
+/* .user-profile, 
+  .profile-name,
+  .profile-detail,
+  .profile-desc {
+    text-align: center; /* Aligns text inside these elements to the center 
+  } */
+
+/* If using Flexbox for the card content alignment */
+/* .user-profile {
+    display: flex;
+    justify-content: center;
+  } */

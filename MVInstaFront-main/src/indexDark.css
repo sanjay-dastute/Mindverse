@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+body.dark-mode, body.dark-mode .ant-layout {
+  /* font-family: 'Montserrat', sans-serif ; */
+  background: #1e1e1e;
+}
+body.dark-mode .text-primary{
+  color: #e0e0e0 !important;
+}
+/* body.dark-mode .text-white{
+  color: #fff;
+} */
+/* .w-full{width: 100%;}
+.text-center{text-align: center;}
+.text-left{text-align: left;}
+.text-right{text-align: right;}
+.m-0{
+  margin: 0;
+}
+.mt-0{
+  margin-top: 0;
+}
+.mb-0{
+  margin-bottom: 0;
+}
+.mt-6{
+  margin-top: 1.5rem;
+}
+.btn-size{
+  width: 260px;
+} */
+body.dark-mode .text-gray{color:#ffffff}
+/* .text-xs{font-size: 12px;} */
+/* .text-md{font-size: 18px;} */
+body.dark-mode .text-black{color: #ffffff;}
+/* .font-semibold{font-weight: 600;} */
+/* .text-pink{
+  color: #F31260
+  ;
+} */
+body.dark-mode .user-dashboard{
+  /* padding: 24px 30px; */
+  background: #1e1e1e;
+  /* min-height: 360px; */
+  /* border-radius: 10px; */
+  /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
+}
+/* @media (max-width:576px) {
+  .user-dashboard {
+    padding: 0px 15px;
+  }
+} */
+/* .border-primary{
+  border-color: #F4B301;
+} */
+
+/*ant components*/
+
+/* .ant-typography,
+.ant-btn,
+.ant-card,
+.ant-modal,
+.ant-table,
+.ant-menu,
+.ant-input, 
+.ant-select,
+.ant-drawer
+.ant-row,
+.ant-form,
+.ant-col,
+.ant-list,
+.ant-table-container,
+.ant-statistic-content-value { 
+  font-family: 'Montserrat', sans-serif;
+} */
+
+/* .ant-form-item-required {
+    color: white !important;
+} */
+body.dark-mode .ant-table-container {
+    background-color: #2d2d2d;
+    color: white;
+}
+.ant-table-tbody > tr:hover > td {
+  background-color: inherit !important; /* Or your specific color */
+}
+body.dark-mode .ant-pagination-prev .ant-pagination-item-link,
+body.dark-mode .ant-pagination-next .ant-pagination-item-link {
+  color: white !important; /* Change arrow color to white */
+  border-color: white !important; /* Change arrow border color to white */
+  background-color: transparent; /* Optional: Make the background transparent */
+}
+body.dark-mode .ant-modal .ant-form-item-label > label {
+  color: black; /* Color inside Modal */
+}
+  
+
+/* .ant-pagination-prev .ant-pagination-item-link:hover,
+.ant-pagination-next .ant-pagination-item-link:hover {
+  color: white !important; /* Maintain arrow color on hover */
+  /*border-color: white !important; /* Maintain border color on hover 
+} */

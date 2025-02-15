@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+body .ant-layout {
+  font-family: 'Montserrat', sans-serif ;
+  /* background: #fff; */
+}
+.text-primary{
+  color: #F4B301 !important;
+}
+.text-white{
+  color: #fff;
+}
+.w-full{width: 100%;}
+.text-center{text-align: center;}
+.text-left{text-align: left;}
+.text-right{text-align: right;}
+.m-0{
+  margin: 0;
+}
+.mt-0{
+  margin-top: 0;
+}
+.mb-0{
+  margin-bottom: 0;
+}
+.mt-6{
+  margin-top: 1.5rem;
+}
+.btn-size{
+  width: 260px;
+}
+.text-gray{color:#8E8E8E}
+.text-xs{font-size: 12px;}
+.text-md{font-size: 18px;}
+.text-black{color: #262626;}
+.font-semibold{font-weight: 600;}
+.text-pink{
+  color: #F31260
+  ;
+}
+.user-dashboard{
+  padding: 24px 30px;
+  background: #fff;
+  min-height: 360px;
+  border-radius: 10px;
+  /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
+}
+.border-primary{
+  border-color: #F4B301;
+}
+@media (max-width:576px) {
+  .user-dashboard {
+    padding: 0px 15px; 
+  }
+}
+
+/*ant components*/
+
+.ant-typography,
+.ant-btn,
+.ant-card,
+.ant-modal,
+.ant-table,
+.ant-menu,
+.ant-input, 
+.ant-select,
+.ant-drawer
+.ant-row,
+.ant-form,
+.ant-col,
+.ant-list,
+.ant-table-container,
+.ant-statistic-content-value { 
+  font-family: 'Montserrat', sans-serif;
+}

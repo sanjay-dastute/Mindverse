@@ -31,7 +31,10 @@ const addProduct = async (req, res) => {
 
     if (!organizationId) {
       console.log('Request made without organizationId');
-      return res.status(400).json({ message: "Bad request: organizationId is required" });
+      return res.status(400).json({
+        success: false,
+        message: "Organization ID is required. Please provide a valid organization ID."
+      });
     }
 
     // Get user details to check tier
@@ -51,7 +54,10 @@ const addProduct = async (req, res) => {
     // Check if adding this product would exceed the tier limit
     if (currentProductCount + 1 > tierLimits[userTier]) {
       console.warn(`Product limit exceeded for organizationId: ${organizationId}, tier: ${userTier}`);
-      return res.status(403).json({ message: `Product limit exceeded for your current subscription` });
+      return res.status(403).json({
+        success: false,
+        message: "Product limit exceeded for your current subscription tier. Please upgrade to add more products."
+      });
     }
 
     let imageUrl = "";
@@ -124,7 +130,10 @@ const updateProduct = async (req, res) => {
 
       if (!organizationId) {
           console.log('Request made without organizationId');
-          return res.status(400).json({ message: "Bad request: organizationId is required" });
+          return res.status(400).json({
+        success: false,
+        message: "Organization ID is required. Please provide a valid organization ID."
+      });
       }
 
       let imageUrl = "";
@@ -164,12 +173,16 @@ const updateProduct = async (req, res) => {
 
       console.log(`Product ${productId} updated successfully for organizationId: ${organizationId}`);
       res.status(200).json({
-        message: "Product image uploaded successfully",
+        success: true,
+        message: "Product updated successfully",
         ...response.data
       });
   } catch (error) {
       console.error('Error in product operation:', error);
-      res.status(500).json({ message: "Failed to process product operation" });
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request. Please try again."
+      });
   }
 };
 
@@ -181,7 +194,10 @@ const deleteProduct = async (req, res) => {
 
       if (!organizationId) {
           console.log('Request made without organizationId');
-          return res.status(400).json({ message: "Bad request: organizationId is required" });
+          return res.status(400).json({
+        success: false,
+        message: "Organization ID is required. Please provide a valid organization ID."
+      });
       }
 
       if (!productId) {
@@ -195,12 +211,16 @@ const deleteProduct = async (req, res) => {
 
       console.log(`Product ${productId} deleted successfully for organizationId: ${organizationId}`);
       res.status(200).json({
+        success: true,
         message: "Product deleted successfully",
         ...response.data
       });
   } catch (error) {
       console.error('Error in product operation:', error);
-      res.status(500).json({ message: "Failed to process product operation" });
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request. Please try again."
+      });
   }
 };
 
@@ -212,7 +232,10 @@ const getAllProducts = async (req, res) => {
 
       if (!organizationId) {
           console.log('Request made without organizationId');
-          return res.status(400).json({ message: "Bad request: organizationId is required" });
+          return res.status(400).json({
+        success: false,
+        message: "Organization ID is required. Please provide a valid organization ID."
+      });
       }
 
       const response = await axios.get(`${DATA_SERVICE_URL}/mv-product/all-products/${organizationId}`);
@@ -224,7 +247,10 @@ const getAllProducts = async (req, res) => {
       });
   } catch (error) {
       console.error('Error in product operation:', error);
-      res.status(500).json({ message: "Failed to process product operation" });
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request. Please try again."
+      });
   }
 };
 
@@ -236,7 +262,10 @@ const getProductName = async (req, res) => {
 
       if (!organizationId || !productId) {
           console.log('Request made without organizationId or productId');
-          return res.status(400).json({ message: "Bad request: organizationId and productId are required" });
+          return res.status(400).json({
+        success: false,
+        message: "Organization ID and Product ID are required. Please provide both values."
+      });
       }
 
       const response = await axios.get(`${DATA_SERVICE_URL}/mv-product/get-product`, {
@@ -250,7 +279,10 @@ const getProductName = async (req, res) => {
       });
   } catch (error) {
       console.error('Error in product operation:', error);
-      res.status(500).json({ message: "Failed to process product operation" });
+      res.status(500).json({
+        success: false,
+        message: "An error occurred while processing your request. Please try again."
+      });
   }
 };
 
@@ -262,7 +294,10 @@ const getMediaCount = async (req, res) => {
 
       if (!organizationId || !productId) {
           console.log('Request made without organizationId or productId');
-          return res.status(400).json({ message: "Bad request: organizationId and productId are required" });
+          return res.status(400).json({
+        success: false,
+        message: "Organization ID and Product ID are required. Please provide both values."
+      });
       }
 
       const response = await axios.get(`${DATA_SERVICE_URL}/mv-product/media-count`, {
@@ -274,9 +309,15 @@ const getMediaCount = async (req, res) => {
   } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 404) {
-          return res.status(404).json({ message: "Failed to get media count: User not found" });
+          return res.status(404).json({
+        success: false,
+        message: "User not found. Please verify your account and try again."
+      });
       }
-      res.status(500).json({ message: "Failed to get media count" });
+      res.status(500).json({
+        success: false,
+        message: "Failed to get media count. Please try again."
+      });
   }
 };
 const tagProductToPost = async (req, res) => {
@@ -309,12 +350,17 @@ const tagProductToPost = async (req, res) => {
         ...response.data
       });
   } catch (error) {
-      console.error(error);
+      console.error('Error tagging product:', error);
       if (error.response) {
-          res.status(error.response.status).json(error.response.data);
+          res.status(error.response.status).json({
+            success: false,
+            message: error.response.data.message || "Failed to tag product. Please try again."
+          });
       } else {
-          console.error('Error tagging product:', error);
-          res.status(500).json({ message: "Failed to tag product to post" });
+          res.status(500).json({
+            success: false,
+            message: "Failed to tag product to post. Please try again."
+          });
       }
   }
 };

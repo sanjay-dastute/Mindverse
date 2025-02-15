@@ -1,28 +1,49 @@
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
+const logger = require('../utils/logger');
+const SupportRequestSchema = require('../models/supportRequestModel');
 dotenv.config();
 
-let conn;
+let conn = mongoose.createConnection();
 
-if (process.env.ENVIRONMENT === 'PROD_OLD') {
-    const options = {
-        tlsCAFile: `certs/global-bundle.pem`
-    };
+// Register models with schemas
+conn.model('SupportRequest', SupportRequestSchema);
 
-    conn = mongoose.createConnection(process.env.MONGO_URI + "/mv-support?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false", options);
-} else {
-    conn = mongoose.createConnection(process.env.MONGO_URI + "/mv-support?authSource=admin");
-}
+const connectWithRetry = async () => {
+    try {
+        const options = {
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
+            heartbeatFrequencyMS: 10000,
+            retryWrites: true,
+            retryReads: true,
+            ...(process.env.ENVIRONMENT === 'PROD_OLD' ? { tlsCAFile: `certs/global-bundle.pem` } : {})
+        };
 
-conn.on('connected', () => {
-    console.log('MV Support database connected successfully');
-});
-  
+        const dbUrl = process.env.ENVIRONMENT === 'PROD_OLD'
+            ? `${process.env.MONGO_URI}/mv-support?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false`
+            : `${process.env.MONGO_URI}/mv-support?authSource=admin`;
+
+        await conn.openUri(dbUrl, options);
+        logger.info('MV Support database connected successfully');
+        return true;
+    } catch (err) {
+        logger.error('Error connecting to MV Support database:', err);
+        setTimeout(connectWithRetry, 5000);
+        return false;
+    }
+};
+
 conn.on('error', (err) => {
-    console.error('MV Support database connection error:', err);
+    logger.error('MV Support database connection error:', err);
+    setTimeout(connectWithRetry, 5000);
 });
 
-conn.model('SupportRequest', require('../models/supportRequestModel'));
+conn.on('disconnected', () => {
+    logger.warn('MV Support database disconnected. Attempting to reconnect...');
+    setTimeout(connectWithRetry, 5000);
+});
 
-
+// Export both the connection and connect function
 module.exports = conn;
+module.exports.connect = connectWithRetry;

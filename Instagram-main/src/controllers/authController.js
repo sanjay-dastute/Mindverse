@@ -95,20 +95,32 @@ const facebookLogin = async (req, res) => {
             res.status(500).json({ error: "Could not fetch instagram Id" });
           }
         } else {
-          console.error("Could not fetch page Id");
-          res.status(500).json({ error: "Could not fetch page Id" });
+          console.error("Could not fetch Facebook page ID");
+          res.status(500).json({ 
+            error: "Failed to fetch Facebook page details. Please try again.",
+            redirect: "/login"
+          });
         }
       } else {
         console.error("Could not generate long lived access token");
-        res.status(500).json({ error: "Could not generate long lived access token" });
+        res.status(500).json({ 
+          error: "Failed to authenticate with Facebook. Please try again.",
+          redirect: "/login"
+        });
       }
     } else {
       console.error("Could not generate access token");
-      res.status(500).json({ error: "Could not generate access token" });
+      res.status(500).json({ 
+        error: "Failed to authenticate with Facebook. Please try again.",
+        redirect: "/login"
+      });
     }
   } catch (error) {
-    console.error("Error occurred during login", error);
-    res.status(500).json({ error: "Error occurred during login" });
+    console.error("Error occurred during Facebook login:", error);
+    res.status(500).json({ 
+      error: "Failed to authenticate with Facebook. Please try again.",
+      redirect: "/login"
+    });
   }
 };
 
@@ -185,20 +197,32 @@ const instagramLogin = async (req, res) => {
             organizationId: organizationId,
           });
         } else {
-          console.error("Could not fetch instagram Id");
-          res.status(500).json({ error: "Could not fetch instagram Id" });
+          console.error("Could not fetch Instagram ID");
+          res.status(500).json({ 
+            error: "Failed to fetch Instagram account details. Please try again.",
+            redirect: "/login"
+          });
         }
       } else {
         console.error("Could not generate long lived access token");
-        res.status(500).json({ error: "Could not generate long lived access token" });
+        res.status(500).json({ 
+          error: "Failed to authenticate with Instagram. Please try again.",
+          redirect: "/login"
+        });
       }
     } else {
       console.error("Could not generate access token");
-      res.status(500).json({ error: "Could not generate access token" });
+      res.status(500).json({ 
+        error: "Failed to authenticate with Instagram. Please try again.",
+        redirect: "/login"
+      });
     }
   } catch (error) {
-    console.error("Error occurred during Instagram login", error);
-    res.status(500).json({ error: "Error occurred during Instagram login" });
+    console.error("Error occurred during Instagram login:", error);
+    res.status(500).json({ 
+      error: "Failed to authenticate with Instagram. Please try again.",
+      redirect: "/login"
+    });
   }
 };
 
@@ -250,7 +274,10 @@ const login = async (req, res) => {
       // that falls out of the range of 2xx
       res.status(error.response.status).json({ error: error.response.data.error });
     } else {
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ 
+        error: "Authentication failed. Please try again.",
+        redirect: "/login"
+      });
     }
   }
 };

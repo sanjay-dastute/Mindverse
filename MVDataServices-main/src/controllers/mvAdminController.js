@@ -1,13 +1,44 @@
-const userConnection = require('../config/user');
-const UniversalContext = userConnection.model('UniversalContext');
-const User = userConnection.model('User');
-const OtherUser = userConnection.model('OtherUser');
-const supportConnection = require('../config/support');
-const SupportRequest = supportConnection.model('SupportRequest');
-const conversationConnection = require('../config/conversation');
-const Conversation = conversationConnection.model('Conversation');
-const logger = require('../config/logger');
+const logger = require('../utils/logger');
 const mongoose = require('mongoose');
+
+// Initialize models as null
+let UniversalContext = null;
+let User = null;
+let OtherUser = null;
+let SupportRequest = null;
+let Conversation = null;
+
+// Import connections
+const userConnection = require('../config/user');
+const supportConnection = require('../config/support');
+const conversationConnection = require('../config/conversation');
+
+// Initialize models after connection is ready
+const initializeModels = async () => {
+    try {
+        // Wait for connections to be ready
+        await Promise.all([
+            new Promise(resolve => userConnection.on('connected', resolve)),
+            new Promise(resolve => supportConnection.on('connected', resolve)),
+            new Promise(resolve => conversationConnection.on('connected', resolve))
+        ]);
+
+        // Initialize models
+        UniversalContext = userConnection.model('UniversalContext');
+        User = userConnection.model('User');
+        OtherUser = userConnection.model('OtherUser');
+        SupportRequest = supportConnection.model('SupportRequest');
+        Conversation = conversationConnection.model('Conversation');
+
+        logger.info('Models initialized successfully');
+    } catch (error) {
+        logger.error('Error initializing models:', error);
+        setTimeout(initializeModels, 1000);
+    }
+};
+
+// Initialize models
+initializeModels();
 
 const getAllUsers = async (req, res) => {
     try {

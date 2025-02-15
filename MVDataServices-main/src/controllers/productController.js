@@ -1,8 +1,32 @@
 const productConnection = require('../config/product');
-const Product = productConnection.model('Product');
 const userConnection = require('../config/user');
-const User = userConnection.model('User');
-const logger = require('../config/logger');
+const logger = require('../utils/logger');
+
+// Initialize models as null
+let Product = null;
+let User = null;
+
+// Initialize models after connection is ready
+const initializeModels = async () => {
+    try {
+        // Wait for connections to be ready
+        await Promise.all([
+            new Promise(resolve => productConnection.on('connected', resolve)),
+            new Promise(resolve => userConnection.on('connected', resolve))
+        ]);
+
+        // Initialize models
+        Product = productConnection.model('Product');
+        User = userConnection.model('User');
+        logger.info('Product and User models initialized successfully');
+    } catch (error) {
+        logger.error('Error initializing product models:', error);
+        setTimeout(initializeModels, 1000);
+    }
+};
+
+// Initialize models
+initializeModels();
 
 const addProduct = async (req, res) => {
     try {

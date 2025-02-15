@@ -58,18 +58,49 @@ app.use('/payments', paymentRoutes);
 const PORT = process.env.PORT || 3013;
 
 const startServer = async () => {
+  const connectDatabases = async () => {
+    try {
+      // Initialize database connections
+      const connections = {
+        'User/Instagram': userConnection,
+        'Conversation': conversationConnection,
+        'Product': productConnection,
+        'Support': supportConnection,
+        'Payment': paymentConnection
+      };
+
+      // Wait for all connections to be established
+      for (const [name, connection] of Object.entries(connections)) {
+        if (!connection) continue;
+        await new Promise((resolve) => {
+          if (connection.readyState === 1) {
+            console.log(`${name} database already connected`);
+            resolve();
+          } else {
+            connection.once('connected', () => {
+              console.log(`${name} database connected successfully`);
+              resolve();
+            });
+          }
+        });
+      }
+
+      logger.info('All database connections established successfully');
+      
+      // Start the server after successful database connections
+      app.listen(PORT, () => {
+        logger.info(`Server running on port ${PORT}`);
+      });
+    } catch (error) {
+      logger.error('Error connecting to databases:', error);
+      setTimeout(connectDatabases, 5000);
+    }
+  };
+
   try {
-    await conversationConnection.asPromise();
-    await userConnection.asPromise();
-    await supportConnection.asPromise();
-    await productConnection.asPromise();
-    await paymentConnection.asPromise();
-    
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    await connectDatabases();
   } catch (error) {
-    console.error('Failed to connect to databases:', error);
+    console.error('Failed to start server:', error);
     process.exit(1);
   }
 };
